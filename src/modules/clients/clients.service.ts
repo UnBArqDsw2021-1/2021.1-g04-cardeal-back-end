@@ -33,13 +33,14 @@ export class ClientsService {
   }
 
   async update(id: number, data: Partial<UpdateClientDto>) {
-    console.log(data);
-
     await this.clientsRepository.update({ id }, data);
-    return await this.clientsRepository.findOne(
+
+    const client = await this.clientsRepository.findOne(
       { id },
       { relations: ['phones'] },
     );
+
+    return client;
   }
 
   async remove(id: number): Promise<void> {
