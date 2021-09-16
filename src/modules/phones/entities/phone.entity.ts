@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Client } from '../clients/entities/client.entity';
+import { Client } from '../../clients/entities/client.entity';
 
 @Entity()
 export class Phone {
@@ -9,6 +9,9 @@ export class Phone {
   @Column()
   phone_number: string;
 
-  @ManyToOne(() => Client, (client) => client.phones)
+  @ManyToOne(() => Client, (client) => client.phones, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   client: Client;
 }
