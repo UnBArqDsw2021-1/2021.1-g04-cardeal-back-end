@@ -1,85 +1,43 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import { networkInterfaces } from 'os';
+import { Repository } from 'typeorm';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { Property } from './entities/property.entity';
 
 @Injectable()
 export class PropertiesService {
-  private properties: Property[] = [
-    {
-      id: 1,
-      name: 'FulanoTeste',
-      city: 'Brasília',
-      state: 'Distrito Federal',
-      district: 'Asa Norte',
-      street: 'SQN 116',
-      number: 304,
-      zipNumber: '78903000',
-      type: 'Apartamento',
-      size: '63',
-      numberBedroom: 3,
-      numberBath: 2,
-      numberPark: 1,
-      status: 'Aluguel',
-      value: 1500.0,
-      viewed: 132,
-      idOwner: 1111,
-      idRealtor: 22,
-      createdAt: null,
-      updatedAt: null,
-    },
-    {
-      id: 2,
-      name: 'deTal',
-      city: 'Brasília',
-      state: 'Distrito Federal',
-      district: 'Asa Norte',
-      street: 'SQN 116',
-      number: 304,
-      zipNumber: '78903000',
-      type: 'Apartamento',
-      size: '63',
-      numberBedroom: 3,
-      numberBath: 2,
-      numberPark: 1,
-      status: 'Aluguel',
-      value: 1500.0,
-      viewed: 132,
-      idOwner: 1111,
-      idRealtor: 22,
-      createdAt: null,
-      updatedAt: null,
-    },
-  ];
+  constructor(
+    @InjectRepository(Property)
+    private propertyRepository: Repository<Property>,
+  ) {}
 
-  create(createPropertyDto: CreatePropertyDto): Property {
+  create(createPropertyDto: CreatePropertyDto): Promise<Property> {
     const newProperty = {
-      id: Date.now(),
       ...createPropertyDto,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
     };
 
-    this.properties.push(newProperty);
+    const again = this.propertyRepository.create(newProperty);
 
-    return newProperty;
+    return this.propertyRepository.save(again);
   }
 
-  findAll(): Property[] {
-    return this.properties;
+  findAll(): Promise<Property[]> {
+    return this.propertyRepository.find();
   }
 
-  findOne(id: number): Property {
-    const queryProperty = this.properties.find(
-      (property) => property.id === id,
-    );
+  findOne(id: number): Promise<Property> {
+    const queryProperty = this.propertyRepository.findOne(id);
 
     return queryProperty;
   }
 
-  update(id: number, updatePropertyDto: UpdatePropertyDto) {
-    const property = this.findOne(id);
+  async update(
+    id: number,
+    updatePropertyDto: UpdatePropertyDto,
+  ): Promise<Property> {
+    const property = await this.findOne(id);
 
     if (!property) {
       return null;
@@ -89,14 +47,14 @@ export class PropertiesService {
       if (updatePropertyDto[key]) property[key] = updatePropertyDto[key];
     }
 
+    this.propertyRepository.save(property);
+
     return property;
   }
 
-  remove(id: number) {
-    const index = this.properties.findIndex((value) => value.id === id);
+  async remove(id: number) {
+    const removedProperty = await this.findOne(id);
 
-    this.properties.splice(index, 1);
-
-    return { status: 201, message: 'User Deleted' };
+    return this.propertyRepository.remove(removedProperty);
   }
 }
