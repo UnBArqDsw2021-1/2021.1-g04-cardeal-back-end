@@ -23,12 +23,12 @@ export class PropertiesController {
   }
 
   @Get()
-  findAll(): Property[] {
+  findAll(): Promise<Property[]> {
     return this.propertiesService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Property {
+  findOne(@Param('id') id: string): Promise<Property> {
     const property = this.propertiesService.findOne(+id);
 
     if (!property) {
@@ -42,7 +42,7 @@ export class PropertiesController {
   update(
     @Param('id') id: string,
     @Body() updatePropertyDto: UpdatePropertyDto,
-  ) {
+  ): Promise<Property> {
     const property = this.propertiesService.update(+id, updatePropertyDto);
 
     if (!property) {
@@ -53,7 +53,7 @@ export class PropertiesController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<Property> {
     return this.propertiesService.remove(+id);
   }
 }
