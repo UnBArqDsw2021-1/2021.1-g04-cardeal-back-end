@@ -17,6 +17,19 @@ export class PhonesService {
   }
 
   async update(id: number, data: Partial<UpdatePhoneDto>) {
-    return await this.phonesRepository.update({ id }, data);
+    const phone = await this.phonesRepository.findOne(id);
+
+    if (!phone) {
+      return null;
+    }
+
+    for (const key in phone) {
+      if (data[key]) phone[key] = data[key];
+    }
+
+    this.phonesRepository.save(phone);
+
+    return phone;
+    //  return await this.phonesRepository.update({ id }, data);
   }
 }
