@@ -28,13 +28,20 @@
 
 ## Installation
 
+You need docker installed, if you don't have it then go here [docker install](https://docs.docker.com/engine/installation/linux/docker-ce/). And install this one [Docker-compose](https://docs.docker.com/compose/install/).
+
 ```bash
 $ npm install
 ```
 
 ## Running the app
 
+
+
 ```bash
+# docker-compose mysql environment
+$ docker-compose up
+
 # development
 $ npm run start
 
