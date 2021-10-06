@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -24,26 +24,34 @@ export class ClientsService {
     return this.clientsRepository.find({ relations: ['phones'] });
   }
 
-  findOne(id: number): Promise<Client> {
-    const client = this.clientsRepository.findOne(+id, {
-      relations: ['phones'],
-    });
-
-    return client;
+  async findOne(id: number): Promise<Client> {
+    try {
+      const client = await this.clientsRepository.findOneOrFail(+id, {
+        relations: ['phones'],
+      });
+      return client;
+    } catch (err) {
+      throw new NotFoundException();
+    }
   }
 
   async update(id: number, data: Partial<UpdateClientDto>) {
-    await this.clientsRepository.update({ id }, data);
+    const client = await this.findOne(id);
 
-    const client = await this.clientsRepository.findOne(
-      { id },
-      { relations: ['phones'] },
-    );
+    //await this.clientsRepository.update({ id }, data);
+
+    client.name = data.name;
+    client.cpf = data.cpf;
+    client.email = data.email;
+
+    this.clientsRepository.save(client);
 
     return client;
   }
 
-  async remove(id: number): Promise<void> {
-    await this.clientsRepository.delete(+id);
+  async remove(id: number): Promise<Client> {
+    const client = await this.findOne(id);
+
+    return await this.clientsRepository.remove(client);
   }
 }

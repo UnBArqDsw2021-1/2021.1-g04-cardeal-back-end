@@ -1,7 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { networkInterfaces } from 'os';
-import { Between, In, LessThan, MoreThan, Not, Repository  } from 'typeorm';
+import { Between, MoreThan, Repository } from 'typeorm';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { Property } from './entities/property.entity';
@@ -23,10 +22,13 @@ export class PropertiesService {
     return this.propertyRepository.save(again);
   }
 
-  findOne(id: number): Promise<Property> {
-    const queryProperty = this.propertyRepository.findOne(id);
-
-    return queryProperty;
+  async findOne(id: number): Promise<Property> {
+    try {
+      const property = await this.propertyRepository.findOneOrFail(id);
+      return property;
+    } catch (err) {
+      throw new NotFoundException();
+    }
   }
 
   findByQuery(limit, page): Promise<Property[]> {
@@ -130,10 +132,6 @@ export class PropertiesService {
   ): Promise<Property> {
     const property = await this.findOne(id);
 
-    if (!property) {
-      return null;
-    }
-
     for (const key in property) {
       if (updatePropertyDto[key]) property[key] = updatePropertyDto[key];
     }
@@ -143,7 +141,7 @@ export class PropertiesService {
     return property;
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<Property> {
     const removedProperty = await this.findOne(id);
 
     return this.propertyRepository.remove(removedProperty);

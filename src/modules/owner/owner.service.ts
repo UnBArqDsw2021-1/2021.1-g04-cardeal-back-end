@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -14,36 +14,44 @@ export class OwnersService {
   ) {}
 
   async create(data: CreateOwnerDto) {
-    const client = this.ownerRepository.create(data);
+    const owner = this.ownerRepository.create(data);
     await this.ownerRepository.save(data);
 
-    return client;
+    return owner;
   }
 
   findAll(): Promise<Owner[]> {
     return this.ownerRepository.find({ relations: ['phones'] });
   }
 
-  findOne(id: number): Promise<Owner> {
-    const client = this.ownerRepository.findOne(+id, {
-      relations: ['phones'],
-    });
-
-    return client;
+  async findOne(id: number): Promise<Owner> {
+    try {
+      const owner = await this.ownerRepository.findOneOrFail(+id, {
+        relations: ['phones'],
+      });
+      return owner;
+    } catch (err) {
+      throw new NotFoundException();
+    }
   }
 
   async update(id: number, data: Partial<UpdateOwnerDto>) {
-    await this.ownerRepository.update({ id }, data);
+    const owner = await this.findOne(id);
 
-    const client = await this.ownerRepository.findOne(
-      { id },
-      { relations: ['phones'] },
-    );
+    //await this.ownersRepository.update({ id }, data);
 
-    return client;
+    owner.name = data.name;
+    owner.cpf = data.cpf;
+    owner.email = data.email;
+
+    this.ownerRepository.save(owner);
+
+    return owner;
   }
 
-  async remove(id: number): Promise<void> {
-    await this.ownerRepository.delete(+id);
+  async remove(id: number): Promise<Owner> {
+    const owner = await this.findOne(id);
+
+    return this.ownerRepository.remove(owner);
   }
 }
