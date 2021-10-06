@@ -7,6 +7,6 @@ export class Realtor extends Person {
   @Column()
   passwordHash: string;
 
-  @OneToMany(() => Phone, (phone) => phone.realtor, { cascade: true })
-  phones: Phone[];
+  // @OneToMany(() => Phone, (phone) => phone.realtor, { cascade: true })
+  // phones: Phone[];
 }

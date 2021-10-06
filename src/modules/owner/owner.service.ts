@@ -21,14 +21,12 @@ export class OwnersService {
   }
 
   findAll(): Promise<Owner[]> {
-    return this.ownerRepository.find({ relations: ['phones'] });
+    return this.ownerRepository.find();
   }
 
   async findOne(id: number): Promise<Owner> {
     try {
-      const owner = await this.ownerRepository.findOneOrFail(+id, {
-        relations: ['phones'],
-      });
+      const owner = await this.ownerRepository.findOneOrFail(id);
       return owner;
     } catch (err) {
       throw new NotFoundException();
@@ -43,6 +41,7 @@ export class OwnersService {
     owner.name = data.name;
     owner.cpf = data.cpf;
     owner.email = data.email;
+    owner.phone = data.phone;
 
     this.ownerRepository.save(owner);
 

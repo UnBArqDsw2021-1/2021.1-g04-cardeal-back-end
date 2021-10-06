@@ -21,14 +21,12 @@ export class ClientsService {
   }
 
   findAll(): Promise<Client[]> {
-    return this.clientsRepository.find({ relations: ['phones'] });
+    return this.clientsRepository.find();
   }
 
   async findOne(id: number): Promise<Client> {
     try {
-      const client = await this.clientsRepository.findOneOrFail(+id, {
-        relations: ['phones'],
-      });
+      const client = await this.clientsRepository.findOneOrFail(id);
       return client;
     } catch (err) {
       throw new NotFoundException();
@@ -43,6 +41,7 @@ export class ClientsService {
     client.name = data.name;
     client.cpf = data.cpf;
     client.email = data.email;
+    client.phone = data.phone;
 
     this.clientsRepository.save(client);
 

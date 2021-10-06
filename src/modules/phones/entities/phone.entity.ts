@@ -11,21 +11,21 @@ export class Phone {
   @Column()
   phone_number: string;
 
-  @ManyToOne(() => Client, (client) => client.phones, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  client: Client;
+  // @ManyToOne(() => Client, (client) => client.phones, {
+  //   onDelete: 'CASCADE',
+  //   onUpdate: 'CASCADE',
+  // })
+  // client: Client;
 
-  @ManyToOne(() => Realtor, (realtor) => realtor.phones, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
-  realtor: Realtor;
+  // @ManyToOne(() => Realtor, (realtor) => realtor.phones, {
+  //   onDelete: 'CASCADE',
+  //   onUpdate: 'CASCADE',
+  // })
+  // realtor: Realtor;
 
-  @ManyToOne(() => Owner, (owner) => owner.phones, {
-    onDelete: 'CASCADE',
-    onUpdate: 'CASCADE',
-  })
+  // @ManyToOne(() => Owner, (owner) => owner.phones, {
+  //   onDelete: 'CASCADE',
+  //   onUpdate: 'CASCADE',
+  // })
   owner: Owner;
 }

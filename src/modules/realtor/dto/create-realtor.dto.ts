@@ -3,5 +3,5 @@ export class CreateRealtorDto {
   cpf: string;
   email: string;
   passwordHash: string;
-  phones: [];
+  phone: string;
 }

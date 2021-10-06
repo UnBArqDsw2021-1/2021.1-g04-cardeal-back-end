@@ -21,7 +21,7 @@ export class RealtorsService {
   }
 
   findAll(): Promise<Realtor[]> {
-    return this.realtorsRepository.find({ relations: ['phones'] });
+    return this.realtorsRepository.find();
   }
 
   async findOne(id: number): Promise<Realtor> {
@@ -40,6 +40,7 @@ export class RealtorsService {
     realtor.cpf = data.cpf;
     realtor.email = data.email;
     realtor.passwordHash = data.passwordHash;
+    realtor.phone = data.phone;
 
     this.realtorsRepository.save(realtor);
 
