@@ -41,6 +41,15 @@ export class PropertiesController {
     return this.propertiesService.findByType(tipoAtributo, limit, page);
   }
 
+  @Get('status')
+  findByStatus(
+    @Query('tipoAtributo') tipoAtributo: string,
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+  ): Promise<Property[]> {
+    return this.propertiesService.findByStatus(tipoAtributo, limit, page);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Property> {
     const property = this.propertiesService.findOne(+id);

@@ -44,10 +44,23 @@ export class PropertiesService {
   findByType(tipoAtributo, limit, page): Promise<Property[]> {
     const take = limit || 50;
     const skip = page * limit || 0;
-    const wow = tipoAtributo;
 
     const queryResult = this.propertyRepository.find({
-      where: { type: wow },
+      where: { type: tipoAtributo },
+      take: take,
+      skip: skip,
+      order: { viewed: 'DESC' },
+    });
+
+    return queryResult;
+  }
+
+  findByStatus(tipoAtributo, limit, page): Promise<Property[]> {
+    const take = limit || 50;
+    const skip = page * limit || 0;
+
+    const queryResult = this.propertyRepository.find({
+      where: { status: tipoAtributo },
       take: take,
       skip: skip,
       order: { viewed: 'DESC' },
