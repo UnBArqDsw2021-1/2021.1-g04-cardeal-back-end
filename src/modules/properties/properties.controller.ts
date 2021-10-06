@@ -59,6 +59,33 @@ export class PropertiesController {
     return this.propertiesService.findByDistrict(tipoAtributo, limit, page);
   }
 
+  @Get('search')
+  findBySearch(
+    @Query('status') status: string,
+    @Query('city') city: string,
+    @Query('district') district: string,
+    @Query('lowprice') lowprice: number,
+    @Query('highprice') highprice: number,
+    @Query('baths') baths: number,
+    @Query('rooms') rooms: number,
+    @Query('m2') m2: number,
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+  ): Promise<Property[]> {
+    return this.propertiesService.findBySearch(
+      status,
+      city,
+      district,
+      lowprice,
+      highprice,
+      baths,
+      rooms,
+      m2,
+      limit,
+      page,
+    );
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Property> {
     const property = this.propertiesService.findOne(+id);
