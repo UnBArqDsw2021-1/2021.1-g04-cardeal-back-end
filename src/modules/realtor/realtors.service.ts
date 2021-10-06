@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -24,26 +24,31 @@ export class RealtorsService {
     return this.realtorsRepository.find({ relations: ['phones'] });
   }
 
-  findOne(id: number): Promise<Realtor> {
-    const realtor = this.realtorsRepository.findOne(+id, {
-      relations: ['phones'],
-    });
-
-    return realtor;
+  async findOne(id: number): Promise<Realtor> {
+    try {
+      const realtor = await this.realtorsRepository.findOneOrFail(id);
+      return realtor;
+    } catch (err) {
+      throw new NotFoundException();
+    }
   }
 
   async update(id: number, data: Partial<UpdateRealtorDto>) {
-    await this.realtorsRepository.update({ id }, data);
+    const realtor = await this.findOne(id);
 
-    const realtor = await this.realtorsRepository.findOne(
-      { id },
-      { relations: ['phones'] },
-    );
+    realtor.name = data.name;
+    realtor.cpf = data.cpf;
+    realtor.email = data.email;
+    realtor.passwordHash = data.passwordHash;
+
+    this.realtorsRepository.save(realtor);
 
     return realtor;
   }
 
-  async remove(id: number): Promise<void> {
-    await this.realtorsRepository.delete(+id);
+  async remove(id: number): Promise<Realtor> {
+    const realtor = await this.findOne(id);
+
+    return this.realtorsRepository.remove(realtor);
   }
 }
