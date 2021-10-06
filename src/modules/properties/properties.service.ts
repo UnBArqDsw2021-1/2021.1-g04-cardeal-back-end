@@ -23,14 +23,37 @@ export class PropertiesService {
     return this.propertyRepository.save(again);
   }
 
-  findAll(): Promise<Property[]> {
-    return this.propertyRepository.find();
-  }
-
   findOne(id: number): Promise<Property> {
     const queryProperty = this.propertyRepository.findOne(id);
 
     return queryProperty;
+  }
+
+  findByQuery(limit, page): Promise<Property[]> {
+    const take = limit || 50;
+    const skip = page * limit || 0;
+
+    const queryResult = this.propertyRepository.find({
+      take: take,
+      skip: skip,
+    });
+
+    return queryResult;
+  }
+
+  findByType(tipoAtributo, limit, page): Promise<Property[]> {
+    const take = limit || 50;
+    const skip = page * limit || 0;
+    const wow = tipoAtributo;
+
+    const queryResult = this.propertyRepository.find({
+      where: { type: wow },
+      take: take,
+      skip: skip,
+      order: { viewed: 'DESC' },
+    });
+
+    return queryResult;
   }
 
   async update(
