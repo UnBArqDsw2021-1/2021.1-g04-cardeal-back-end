@@ -6,6 +6,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
+  // eslint-disable-next-line @typescript-eslint/ban-types
   getHello(): object {
     return this.appService.getHello();
   }
