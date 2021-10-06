@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   NotFoundException,
+  Query,
 } from '@nestjs/common';
 import { PropertiesService } from './properties.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { Property } from './entities/property.entity';
+import { type } from 'os';
 
 @Controller('properties')
 export class PropertiesController {
@@ -23,8 +25,38 @@ export class PropertiesController {
   }
 
   @Get()
-  findAll(): Promise<Property[]> {
-    return this.propertiesService.findAll();
+  findByQuery(
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+  ): Promise<Property[]> {
+    return this.propertiesService.findByQuery(limit, page);
+  }
+
+  @Get('type')
+  findByType(
+    @Query('tipoAtributo') tipoAtributo: string,
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+  ): Promise<Property[]> {
+    return this.propertiesService.findByType(tipoAtributo, limit, page);
+  }
+
+  @Get('status')
+  findByStatus(
+    @Query('tipoAtributo') tipoAtributo: string,
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+  ): Promise<Property[]> {
+    return this.propertiesService.findByStatus(tipoAtributo, limit, page);
+  }
+
+  @Get('district')
+  findByDistrict(
+    @Query('tipoAtributo') tipoAtributo: string,
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+  ): Promise<Property[]> {
+    return this.propertiesService.findByDistrict(tipoAtributo, limit, page);
   }
 
   @Get(':id')
