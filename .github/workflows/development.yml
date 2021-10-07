@@ -58,7 +58,7 @@ jobs:
         uses: google-github-actions/get-gke-credentials@main
         with:
           cluster_name: cardeal
-          location: us-central1
+          location: us-central1-c
           credentials: ${{ secrets.GCLOUD_SERVICE_KEY_PROD }}
       - name: Get the Tag
         id: get_tag_name
