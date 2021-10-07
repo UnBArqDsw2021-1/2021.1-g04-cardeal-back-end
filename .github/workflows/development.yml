@@ -58,7 +58,7 @@ jobs:
         uses: google-github-actions/get-gke-credentials@main
         with:
           cluster_name: cardeal
-          location: us-central1-c
+          location: us-central1
           credentials: ${{ secrets.GCLOUD_SERVICE_KEY_PROD }}
       - name: Get the Tag
         id: get_tag_name
@@ -66,7 +66,7 @@ jobs:
       - id: get-nodes
         run:  helm upgrade --install  --set release.image=$IMAGE --set release.name=$PROJECT_NAME --set release.port=$PORT  --namespace $NAMESPACE --force --wait $PROJECT_NAME $HELM_PATH
         env:
-          PROJECT_NAME: cardeal-api-${{ steps.get_image_name.outputs.GIT_IMAGE_NAME}}
+          PROJECT_NAME: cardeal-api
           NAMESPACE: api-system
           IMAGE: zero101010/cardeal:${{ steps.get_tag_name.outputs.GIT_TAG_NAME}}
           PORT: 3000
