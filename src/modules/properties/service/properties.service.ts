@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, MoreThan, Repository } from 'typeorm';
-import { CreatePropertyDto } from './dto/create-property.dto';
-import { UpdatePropertyDto } from './dto/update-property.dto';
-import { Property } from './entities/property.entity';
+import { CreatePropertyDto } from '../dto/create-property.dto';
+import { UpdatePropertyDto } from '../dto/update-property.dto';
+import { Property } from '../entities/property.entity';
 
 @Injectable()
 export class PropertiesService {
@@ -13,13 +13,9 @@ export class PropertiesService {
   ) {}
 
   create(createPropertyDto: CreatePropertyDto): Promise<Property> {
-    const newProperty = {
-      ...createPropertyDto,
-    };
+    const property = this.propertyRepository.create(createPropertyDto);
 
-    const again = this.propertyRepository.create(newProperty);
-
-    return this.propertyRepository.save(again);
+    return this.propertyRepository.save(property);
   }
 
   async findOne(id: number): Promise<Property> {
