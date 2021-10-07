@@ -44,7 +44,7 @@ jobs:
         IMAGE: zero101010/cardeal
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-        docker build -t $IMAGE:${{ github.sha }} -f config/production/Dockerfile .
+        docker build -t $IMAGE:${{ github.sha }} .
         docker push $IMAGE:${{ github.sha }}
 
   deploy:
