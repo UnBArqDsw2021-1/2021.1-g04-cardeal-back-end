@@ -7,6 +7,7 @@ import { PhonesModule } from './modules/phones/phones.module';
 import { RealtorsModule } from './modules/realtor/realtors.module';
 import { OwnersModule } from './modules/owner/owner.module';
 import { SchedulesModule } from './modules/schedule/schedule.module';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
