@@ -5,7 +5,7 @@ import { Phone } from 'src/modules/phones/entities/phone.entity';
 @Entity()
 export class Realtor extends Person {
   @Column()
-  passwordHash: string;
+  password: string;
 
   // @OneToMany(() => Phone, (phone) => phone.realtor, { cascade: true })
   // phones: Phone[];

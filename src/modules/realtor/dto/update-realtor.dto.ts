@@ -5,6 +5,6 @@ export class UpdateRealtorDto extends PartialType(CreateRealtorDto) {
   name?: string;
   cpf?: string;
   email?: string;
-  passwordHash?: string;
+  password?: string;
   phone?: string;
 }

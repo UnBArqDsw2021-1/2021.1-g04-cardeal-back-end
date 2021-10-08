@@ -1,0 +1,7 @@
+release:
+  name: monprospecteur-api
+  namespace: api-system
+  replicaCount: 1
+  image: gcr.io/staging-314317/monprospecteur-api
+  port: 3000
+  host: api-cardeal.devopstests.com
