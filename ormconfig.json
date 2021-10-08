@@ -1,0 +1,10 @@
+{
+    "type": "mysql",
+    "host": "34.121.53.236",
+    "port": 3306,
+    "username": "root",
+    "password": "cardeal12345678",
+    "database": "cardeal",
+    "entities": ["dist/**/*.entity{.ts,.js}"],
+    "synchronize": true
+  }
