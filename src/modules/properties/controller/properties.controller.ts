@@ -20,8 +20,10 @@ export class PropertiesController {
   constructor(private readonly propertiesService: PropertiesService) {}
 
   @Post()
-  create(@Body() createPropertyDto: CreatePropertyDto) {
-    return this.propertiesService.create(createPropertyDto);
+  async create(@Body() createPropertyDto: CreatePropertyDto) {
+    return await this.propertiesService.create({
+      ...createPropertyDto,
+    });
   }
 
   @Get()

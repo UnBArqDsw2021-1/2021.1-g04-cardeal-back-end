@@ -13,13 +13,9 @@ export class PropertiesService {
   ) {}
 
   create(createPropertyDto: CreatePropertyDto): Promise<Property> {
-    const newProperty = {
-      ...createPropertyDto,
-    };
+    const property = this.propertyRepository.create(createPropertyDto);
 
-    const again = this.propertyRepository.create(newProperty);
-
-    return this.propertyRepository.save(again);
+    return this.propertyRepository.save(property);
   }
 
   async findOne(id: number): Promise<Property> {

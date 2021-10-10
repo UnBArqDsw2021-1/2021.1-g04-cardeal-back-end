@@ -7,6 +7,7 @@ import { PhonesModule } from './modules/phones/phones.module';
 import { RealtorsModule } from './modules/realtor/realtors.module';
 import { OwnersModule } from './modules/owner/owner.module';
 import { SchedulesModule } from './modules/schedule/schedule.module';
+import { MediaModule } from './modules/media/media.module';
 import { JwtModule } from '@nestjs/jwt';
 
 @Module({
@@ -17,6 +18,7 @@ import { JwtModule } from '@nestjs/jwt';
     OwnersModule,
     PhonesModule,
     SchedulesModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
