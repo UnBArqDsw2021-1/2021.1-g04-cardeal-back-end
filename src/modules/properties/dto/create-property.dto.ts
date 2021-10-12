@@ -19,4 +19,5 @@ export class CreatePropertyDto {
   idRealtor: number;
   createdAt: number;
   updatedAt: number;
+  image: string;
 }

@@ -8,19 +8,44 @@ import {
   Delete,
   NotFoundException,
   Query,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { PropertiesService } from './properties.service';
 import { CreatePropertyDto } from './dto/create-property.dto';
 import { UpdatePropertyDto } from './dto/update-property.dto';
 import { Property } from './entities/property.entity';
 import { type } from 'os';
-
+import {FilesInterceptor } from '@nestjs/platform-express';
+import  MulterGoogleStorage  from 'multer-google-storage';
+import * as path from 'path';
 @Controller('properties')
 export class PropertiesController {
   constructor(private readonly propertiesService: PropertiesService) {}
 
   @Post()
-  create(@Body() createPropertyDto: CreatePropertyDto) {
+  @UseInterceptors(FilesInterceptor('file', null, {
+    storage: new MulterGoogleStorage({
+      projectId: 'wise-mantra-325305',
+      keyFilename: './service-account.json',
+      bucket: "cardeal-upload",
+      contentType: (req, file)=>{
+        return "image/jpeg";
+      }
+        ,
+      filename: (req, file, cb) => {
+        const fileNameSplit = file.originalname.split('.');
+        const fileExt = fileNameSplit.pop();
+        cb(null, `${Date.now()}.${fileExt}`);
+      }
+    })
+  }))
+  async create(@UploadedFiles() file,@Body() createPropertyDto: CreatePropertyDto) {
+    if (file.length === 0){
+      return {error:"The filed file doesn`t exist, please check the field and try again"}
+    }
+    let bucketUrl = file[0].path
+    createPropertyDto.image = bucketUrl
     return this.propertiesService.create(createPropertyDto);
   }
 
