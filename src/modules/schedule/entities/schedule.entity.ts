@@ -1,7 +1,10 @@
+import { Client } from 'src/modules/clients/entities/client.entity';
+import { Realtor } from 'src/modules/realtor/entities/realtor.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -20,6 +23,12 @@ export class Schedule {
 
   @Column()
   idProperty: number;
+
+  @ManyToOne(type => Client, schedule => Schedule)
+  client: Client;
+
+  @ManyToOne(type => Realtor, schedule => Schedule)
+  realtor: Realtor;
 
   @CreateDateColumn()
   createdAt: Date;
