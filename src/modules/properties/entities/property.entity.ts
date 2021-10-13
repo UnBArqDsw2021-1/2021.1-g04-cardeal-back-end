@@ -62,6 +62,9 @@ export class Property {
   @Column()
   idRealtor: number;
 
+  @Column()
+  image: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
