@@ -20,7 +20,7 @@ import { AuthService } from './auth.service';
 export class RealtorsController {
   constructor(private readonly realtorsService: RealtorsService, private authService: AuthService) {}
 
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   @Post()
   create(@Body() createRealtorDto: CreateRealtorDto) {
     return this.realtorsService.create(createRealtorDto);

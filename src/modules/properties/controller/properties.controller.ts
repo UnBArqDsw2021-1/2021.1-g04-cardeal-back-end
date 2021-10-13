@@ -24,7 +24,7 @@ export class PropertiesController {
   constructor(private readonly propertiesService: PropertiesService) {}
 
   @Post()
-  @UseInterceptors(FilesInterceptor('file', null, {
+  @UseInterceptors(FilesInterceptor('image', null, {
     storage: new MulterGoogleStorage({
       projectId: 'wise-mantra-325305',
       keyFilename: './service-account.json',
@@ -41,12 +41,14 @@ export class PropertiesController {
     })
   }))
   async create(@UploadedFiles() file,@Body() createPropertyDto: CreatePropertyDto) {
-    if (file.length === 0){
-      return {error:"The filed file doesn`t exist, please check the field and try again"}
+    try {
+      let bucketUrl = file[0].path
+      createPropertyDto.image = bucketUrl
+      return this.propertiesService.create(createPropertyDto);
+    } catch (err) {
+      throw new NotFoundException();
     }
-    let bucketUrl = file[0].path
-    createPropertyDto.image = bucketUrl
-    return this.propertiesService.create(createPropertyDto);
+    
   }
 
   @Get()
