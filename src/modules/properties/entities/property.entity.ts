@@ -71,6 +71,8 @@ export class Property {
 
   @ManyToOne(type => Realtor, properties => Property)
   realtor: Realtor;
+  @Column()
+  image: string;
 
   @CreateDateColumn()
   createdAt: Date;
