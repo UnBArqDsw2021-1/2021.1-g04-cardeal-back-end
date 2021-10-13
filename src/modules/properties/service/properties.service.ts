@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, MoreThan, Repository } from 'typeorm';
-import { CreatePropertyDto } from './dto/create-property.dto';
-import { UpdatePropertyDto } from './dto/update-property.dto';
-import { Property } from './entities/property.entity';
+import { CreatePropertyDto } from '../dto/create-property.dto';
+import { UpdatePropertyDto } from '../dto/update-property.dto';
+import { Property } from '../entities/property.entity';
 
 @Injectable()
 export class PropertiesService {
@@ -13,13 +13,9 @@ export class PropertiesService {
   ) {}
 
   create(createPropertyDto: CreatePropertyDto): Promise<Property> {
-    const newProperty = {
-      ...createPropertyDto,
-    };
+    const property = this.propertyRepository.create(createPropertyDto);
 
-    const again = this.propertyRepository.create(newProperty);
-
-    return this.propertyRepository.save(again);
+    return this.propertyRepository.save(property);
   }
 
   async findOne(id: number): Promise<Property> {
@@ -31,7 +27,7 @@ export class PropertiesService {
     }
   }
 
-  findByQuery(limit, page): Promise<Property[]> {
+  findByQuery(limit: number, page: number): Promise<Property[]> {
     const take = limit || 50;
     const skip = page * limit || 0;
 
@@ -43,7 +39,11 @@ export class PropertiesService {
     return queryResult;
   }
 
-  findByType(tipoAtributo, limit, page): Promise<Property[]> {
+  findByType(
+    tipoAtributo: string,
+    limit: number,
+    page: number,
+  ): Promise<Property[]> {
     const take = limit || 50;
     const skip = page * limit || 0;
 
@@ -57,7 +57,11 @@ export class PropertiesService {
     return queryResult;
   }
 
-  findByStatus(tipoAtributo, limit, page): Promise<Property[]> {
+  findByStatus(
+    tipoAtributo: string,
+    limit: number,
+    page: number,
+  ): Promise<Property[]> {
     const take = limit || 50;
     const skip = page * limit || 0;
 
@@ -71,7 +75,11 @@ export class PropertiesService {
     return queryResult;
   }
 
-  findByDistrict(tipoAtributo, limit, page): Promise<Property[]> {
+  findByDistrict(
+    tipoAtributo: string,
+    limit: number,
+    page: number,
+  ): Promise<Property[]> {
     const take = limit || 50;
     const skip = page * limit || 0;
 
@@ -85,17 +93,35 @@ export class PropertiesService {
     return queryResult;
   }
 
+  findByRealtor(
+    tipoAtributo: number,
+    limit: number,
+    page: number,
+  ): Promise<Property[]> {
+    const take = limit || 50;
+    const skip = page * limit || 0;
+
+    const queryResult = this.propertyRepository.find({
+      where: { idRealtor: tipoAtributo },
+      take: take,
+      skip: skip,
+      order: { viewed: 'ASC' },
+    });
+
+    return queryResult;
+  }
+
   findBySearch(
-    status,
-    city,
-    district,
-    lowprice,
-    highprice,
-    baths,
-    rooms,
-    m2,
-    limit,
-    page,
+    status: string,
+    city: string,
+    district: string,
+    lowprice: number,
+    highprice: number,
+    baths: number,
+    rooms: number,
+    m2: number,
+    limit: number,
+    page: number,
   ): Promise<Property[]> {
     const take = limit || 50;
     const skip = page * limit || 0;

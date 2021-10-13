@@ -11,10 +11,10 @@ import {
   UseInterceptors,
   UploadedFiles,
 } from '@nestjs/common';
-import { PropertiesService } from './properties.service';
-import { CreatePropertyDto } from './dto/create-property.dto';
-import { UpdatePropertyDto } from './dto/update-property.dto';
-import { Property } from './entities/property.entity';
+import { PropertiesService } from '../service/properties.service';
+import { CreatePropertyDto } from '../dto/create-property.dto';
+import { UpdatePropertyDto } from '../dto/update-property.dto';
+import { Property } from '../entities/property.entity';
 import { type } from 'os';
 import {FilesInterceptor } from '@nestjs/platform-express';
 import  MulterGoogleStorage  from 'multer-google-storage';
@@ -82,6 +82,15 @@ export class PropertiesController {
     @Query('page') page: number,
   ): Promise<Property[]> {
     return this.propertiesService.findByDistrict(tipoAtributo, limit, page);
+  }
+
+  @Get('idRealtor')
+  findByRealtor(
+    @Query('tipoAtributo') tipoAtributo: number,
+    @Query('limit') limit: number,
+    @Query('page') page: number,
+  ): Promise<Property[]> {
+    return this.propertiesService.findByRealtor(tipoAtributo, limit, page);
   }
 
   @Get('search')
