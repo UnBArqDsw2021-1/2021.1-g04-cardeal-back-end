@@ -31,13 +31,13 @@ export class RealtorsController {
     return this.authService.login(body);
   }
 
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   @Get()
   findAll() {
     return this.realtorsService.findAll();
   }
   
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.realtorsService.findOne(+id);
