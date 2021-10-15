@@ -15,10 +15,12 @@ import { UpdateRealtorDto } from './dto/update-realtor.dto';
 import { JwtGuard } from './guards/jwt.guard';
 import { AuthService } from './auth.service';
 
-
 @Controller('realtors')
 export class RealtorsController {
-  constructor(private readonly realtorsService: RealtorsService, private authService: AuthService) {}
+  constructor(
+    private readonly realtorsService: RealtorsService,
+    private authService: AuthService,
+  ) {}
 
   @UseGuards(JwtGuard)
   @Post()
@@ -26,7 +28,7 @@ export class RealtorsController {
     return this.realtorsService.create(createRealtorDto);
   }
 
-  @Post("/login")
+  @Post('/login')
   login(@Body() body: any) {
     return this.authService.login(body);
   }
@@ -36,13 +38,13 @@ export class RealtorsController {
   findAll() {
     return this.realtorsService.findAll();
   }
-  
+
   // @UseGuards(JwtGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.realtorsService.findOne(+id);
   }
-  
+
   @UseGuards(JwtGuard)
   @Patch(':id')
   async update(
@@ -57,5 +59,4 @@ export class RealtorsController {
   remove(@Param('id') id: string) {
     return this.realtorsService.remove(+id);
   }
-
 }

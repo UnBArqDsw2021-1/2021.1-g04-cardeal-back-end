@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, MoreThan, Repository } from 'typeorm';
+import { Between, MoreThanOrEqual, Repository } from 'typeorm';
 import { CreatePropertyDto } from '../dto/create-property.dto';
 import { UpdatePropertyDto } from '../dto/update-property.dto';
 import { Property } from '../entities/property.entity';
@@ -128,11 +128,11 @@ export class PropertiesService {
     const negocio = status || 0;
     const cidade = city || 0;
     const bairro = district || 0;
-    const banheiros = baths || MoreThan(0);
-    const quartos = rooms || MoreThan(0);
+    const banheiros = baths || MoreThanOrEqual(0);
+    const quartos = rooms || MoreThanOrEqual(0);
     const precoBaixo = lowprice || 0;
     const precoAlto = highprice || 999999999;
-    const metro2 = m2 || MoreThan(0);
+    const metro2 = m2 || MoreThanOrEqual(0);
 
     const queryResult = this.propertyRepository.find({
       where: {
