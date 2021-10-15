@@ -20,6 +20,9 @@ export abstract class Person {
   @Column()
   email: string;
 
+  @Column()
+  phone: string;
+
   @Column({ default: true })
   isActive: boolean;
 

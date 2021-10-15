@@ -20,4 +20,5 @@ export class UpdatePropertyDto extends PartialType(CreatePropertyDto) {
   idOwner?: number;
   idRealtor?: number;
   updatedAt: number;
+  image?: string;
 }

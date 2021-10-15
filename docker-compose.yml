@@ -4,16 +4,16 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_DATABASE: 'db'
+      MYSQL_DATABASE: 'cardeal'
       # So you don't have to use root, but you can if you like
-      MYSQL_USER: 'user'
+      MYSQL_USER: 'root'
       # You can use whatever password you like
-      MYSQL_PASSWORD: 'password'
+      MYSQL_PASSWORD: 'cardeal12345678'
       # Password for root access
-      MYSQL_ROOT_PASSWORD: 'password'
+      MYSQL_ROOT_PASSWORD: 'cardeal12345678'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
-      - '3307:3306'
+      - '3306:3306'
     volumes:
       - my-db:/var/lib/mysql
 # Names our volume
