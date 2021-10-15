@@ -1,7 +1,11 @@
+import { Owner } from 'src/modules/owner/entities/owner.entity';
+import { Realtor } from 'src/modules/realtor/entities/realtor.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -62,6 +66,11 @@ export class Property {
   @Column()
   idRealtor: number;
 
+  @ManyToOne(type => Owner, properties => Property)
+  owner: Owner;
+
+  @ManyToOne(type => Realtor, properties => Property)
+  realtor: Realtor;
   @Column()
   image: string;
 
