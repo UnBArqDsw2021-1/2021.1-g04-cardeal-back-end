@@ -5,3 +5,4 @@ release:
   image: gcr.io/staging-314317/monprospecteur-api
   port: 3000
   host: api-cardeal.devopstests.com
+  secretTLS: api-backend
